@@ -5,7 +5,7 @@ from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 from sqlalchemy import Integer, String, Float, LargeBinary
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, TextAreaField
-from wtforms.validators import DataRequired, URL
+from wtforms.validators import DataRequired, URL, Length
 from flask_uploads import UploadSet, configure_uploads, IMAGES, patch_request_class
 from flask_wtf.file import FileField, FileRequired, FileAllowed
 from werkzeug.utils import secure_filename
@@ -59,7 +59,7 @@ class Memories(db.Model):
 
 # CREATE FORM
 class MemoryForm(FlaskForm):
-    Description = StringField("What made that moment memorable?", validators=[DataRequired()])
+    Description = TextAreaField("What made that moment memorable?", validators=[DataRequired()])
     Rating = StringField("Rate this memory out of 10 (yes, this is a competition)", validators=[DataRequired()])
     submit = SubmitField("Done")
 
@@ -67,7 +67,7 @@ class MemoryForm(FlaskForm):
 # CREATE FORM 2
 class AddMemoryForm(FlaskForm):
     Title = StringField("Your Memory Title", validators=[DataRequired()])
-    Description = TextAreaField("What happened in this moment?", validators=[DataRequired()])
+    Description = TextAreaField("What happened in this moment?", validators=[DataRequired(), Length(max=500)])
     Review = StringField("Something memorable from the moment eg. something that was said or something they did",
                          validators=[DataRequired()])
     photo = FileField(validators=[FileAllowed(photos, 'Image only!'), FileRequired('File was empty!')])
