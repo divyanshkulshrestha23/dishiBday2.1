@@ -36,7 +36,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = "8BYkEfBA6O6donzWlSihBXox7C0sKR6b"
 Bootstrap5(app)
 db = SQLAlchemy(model_class=Base)
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///memories.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DB_URI", "sqlite:///memories.db")
 db.init_app(app)
 app.config['UPLOADED_PHOTOS_DEST'] = os.path.join(basedir, 'uploads')
 migrate = Migrate(app, db)
